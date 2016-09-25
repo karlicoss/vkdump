@@ -29,7 +29,7 @@ setup(
         'pyhamcrest',
     ],
     install_requires=[
-        # 'TwitterAPI',
+        'vk>=2.0.2',
 
         # 'dataset',  # database helper
         # 'jsonpickle',  # for [de]serialization
