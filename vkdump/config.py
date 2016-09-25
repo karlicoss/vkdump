@@ -4,6 +4,7 @@ from pathlib import Path
 class Config:
     def __init__(self):
         self.USER_ID = None
+        self.ACCESS_TOKEN = None
 
     @staticmethod
     def from_path(path: Path):
