@@ -1,5 +1,5 @@
-from api import get_api, VK_API_VERSION
-from api.users import COMMON_USER_FIELDS
+from vkdump.api import get_api, VK_API_VERSION
+from vkdump.api.users import COMMON_USER_FIELDS
 
 
 def get_friends(user_id: str):

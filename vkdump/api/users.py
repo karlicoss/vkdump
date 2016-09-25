@@ -1,6 +1,6 @@
 from typing import List
 
-from api import get_api, VK_API_VERSION
+from vkdump.api import get_api, VK_API_VERSION
 
 COMMON_USER_FIELDS = [
     'photo_id',

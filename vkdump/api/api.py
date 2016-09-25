@@ -1,12 +1,9 @@
-from tools.singleton import singleton
-
 import vk
 
 VK_API_VERSION = '5.42'
 
 
 # TODO: limits
-@singleton
 class ApiHolder(object):
     def __init__(self):
         super().__init__()
