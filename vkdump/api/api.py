@@ -39,7 +39,9 @@ _COMMON_USER_FIELDS = [
 # TODO: limits
 class VkApi:
     def __init__(self):
-        self.api = vk.API(vk.Session(access_token=config.ACCESS_TOKEN), v='5.53')  # TODO: inject
+        # session = vk.Session(access_token=config.ACCESS_TOKEN)
+        session = vk.Session()
+        self.api = vk.API(session=session, v='5.53')  # TODO: inject
         self.logger = logging.getLogger('VkApi')
         self.logger.setLevel(logging.INFO)
 
@@ -83,6 +85,13 @@ class VkApi:
             res.extend(new_favs)
         return res
 
+    def get_posts_by_ids(self, ids: List[str]) -> List[dict]:
+        ids_string = ','.join(ids)
+        response = self.api.wall.getById(
+            posts=ids_string,
+            extended=1
+        )
+        return response['items']
 
 def get_api() -> VkApi:
     return VkApi()

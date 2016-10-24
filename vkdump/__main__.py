@@ -24,8 +24,9 @@ def main():
 
     # item = load()[66]
     # pprint(item)
-    favs = api.get_all_favs()
-    dump(favs)
+    print(api.get_posts_by_ids(["-106024047_1970"]))
+    # favs = api.get_all_favs()
+    # dump(favs)
 
 
 if __name__ == '__main__':
