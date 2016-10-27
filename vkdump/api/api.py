@@ -39,8 +39,8 @@ _COMMON_USER_FIELDS = [
 # TODO: limits
 class VkApi:
     def __init__(self):
-        # session = vk.Session(access_token=config.ACCESS_TOKEN)
-        session = vk.Session()
+        session = vk.Session(access_token=config.ACCESS_TOKEN)
+        # session = vk.Session()
         self.api = vk.API(session=session, v='5.53')  # TODO: inject
         self.logger = logging.getLogger('VkApi')
         self.logger.setLevel(logging.INFO)
