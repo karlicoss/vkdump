@@ -62,17 +62,19 @@ IGNORED_TYPES = {
     'doc',
     'page',
     'video',
+
+    'photos_list',  # wtf is that?
+    'posted_photo',  # wtf?
+    'album',  # there is only one album, screw it
+    'note',  # there are few, but later TODO
+
+    'poll',  # later TODO
+    'link',  # not really necessary, they are embedded
+    'graffiti',  # well, six graffitis, maybe later
 }
 
 TYPES = {
-    'album',
-    'graffiti',
-    'link',
-    'note',
     'photo',
-    'photos_list',
-    'poll',
-    'posted_photo',
 }
 
 
@@ -89,17 +91,23 @@ def get_attachments(fav: Dict[str, Dict]) -> List[Dict]:
     return att
 
 
-def collect_images() -> Set[str]:
+def retrieve_photos(photos: List[PhotoAttach]):
+    for i, a in enumerate(photos):
+        u = a.best_url()
+        print("Retreiving [%d/%d]: %s" % (i, len(photos), u))
+        urlretrieve(u, config.IMAGES_DIR.joinpath(a.photo_id()).as_posix())
+
+
+def collect_attaches():
     favs = load_favs()
-    attaches = set()
+    attaches = {}
     for fav in favs:
         att = get_attachments(fav)
-        photos = [a for a in att if a['type'] == 'photo']
-        for photo in photos:
-            att = PhotoAttach.from_json(photo)
-            attaches.add(att)
-    for i, a in enumerate(attaches):
-        u = a.best_url()
-        print("Retreiving [%d/%d]: %s" % (i, len(attaches), u))
-        urlretrieve(u, config.IMAGES_DIR.joinpath(a.photo_id()).as_posix())
-    # print(urls)
+        for a in att:
+            type = a['type']
+            l = attaches.get(type, [])
+            l.append(a)
+            attaches[type] = l
+
+    photos = [PhotoAttach.from_json(json) for json in attaches.get('photo', [])]
+    # retrieve_photos(photos)

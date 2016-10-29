@@ -3,7 +3,7 @@ import json
 from typing import List
 
 from vkdump.api import get_api
-from vkdump.old import collect_images
+from vkdump.old import collect_attaches
 
 
 def dump(favs: List):
@@ -22,7 +22,7 @@ def load() -> List:
 
 def main():
     api = get_api()
-    collect_images()
+    collect_attaches()
     # favs = fetch_all_favs()
     # with open("favs.json", 'w') as fo: # TODO instead, merge and sort by timestamp?
     #     json.dump(favs, fo, ensure_ascii=False)
