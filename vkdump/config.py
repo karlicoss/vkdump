@@ -3,8 +3,10 @@ from pathlib import Path
 
 class Config:
     def __init__(self):
-        self.USER_ID = None
-        self.ACCESS_TOKEN = None
+        self.USER_ID = None  # str
+        self.ACCESS_TOKEN = None  # str
+        self.FAVS = None  # Path
+        self.IMAGES_DIR = None  # Path
 
     @staticmethod
     def from_path(path: Path):
