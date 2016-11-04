@@ -1,4 +1,7 @@
 from pathlib import Path
+from typing import Any
+
+from typing import Dict
 
 
 class Config:
@@ -14,7 +17,7 @@ class Config:
         # I know it's not very safe, but couldn't find any decent configuration format for Python
         # supporting dicts
         # Anyway, if user adds some bad code in configuration.py, it's his problem :)
-        result = {}
+        result = {}  # type: Dict[str, Any]
         with path.open('r') as fo:
             exec(fo.read(), result)
         for attr in vars(config):
@@ -32,4 +35,4 @@ except Exception as e:
 
     sys.stderr.write("[Config] Error while reading configuration file: " + str(e))
 
-__all__ = [config]
+__all__ = ['config']

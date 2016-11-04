@@ -78,7 +78,7 @@ TYPES = {
 }
 
 
-def get_attachments(fav: Dict[str, Dict]) -> List[Dict]:
+def get_attachments(fav: Dict[str, List[Dict]]) -> List[Dict]:
     attaches = fav.get('attachments', [])
     att = []
     for a in attaches:

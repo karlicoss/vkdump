@@ -38,7 +38,7 @@ _COMMON_USER_FIELDS = [
 
 # TODO: limits
 class VkApi:
-    def __init__(self):
+    def __init__(self) -> None:
         session = vk.Session(access_token=config.ACCESS_TOKEN)
         # session = vk.Session()
         self.api = vk.API(session=session, v='5.53')  # TODO: inject
@@ -73,7 +73,8 @@ class VkApi:
         return response['items']
 
     def get_all_favs(self) -> List[dict]:
-        res = []  # TODO use map to ensure uniqueness?
+        # TODO use map to ensure uniqueness?
+        res = []  # type: List[dict]
         while True:
             new_favs = self.get_favs(offset=len(res))
             if len(new_favs) == 0:
@@ -92,6 +93,7 @@ class VkApi:
             extended=1
         )
         return response['items']
+
 
 def get_api() -> VkApi:
     return VkApi()
