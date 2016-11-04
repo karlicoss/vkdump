@@ -72,6 +72,8 @@ class VkApi:
         )
         return response['items']
 
+
+    # deprecated
     def get_all_favs(self) -> List[dict]:
         # TODO use map to ensure uniqueness?
         res = []  # type: List[dict]

@@ -1,34 +1,17 @@
 #!/usr/bin/env python3
-import json
-from collections import OrderedDict
 from pprint import pprint
-from typing import List, Dict, Any
 
-from vkdump.api import get_api
-from vkdump.data import load_favs, save_favs
-from vkdump.old import collect_attaches
-
-
-def dump(favs: List):
-    with open("fav_posts.json", 'w') as fo:
-        json.dump(favs, fo)
-        # js = json.dumps(favs, ensure_ascii=False)
-        # fo.write(js)
-
-
-def load() -> List:
-    with open("fav_posts.json", 'r') as fo:
-        items = json.load(fo)
-        return items
-
+from vkdump.models.favs_loader import FavsLoader
 
 
 def main():
-    favs = load_favs()
-    save_favs(favs)
-    # api = get_api()
-    # favs = api.get_favs(0)
-    # pprint(favs[:10])
+    loader = FavsLoader()
+    # favs = loader.load_favs()
+    # loader.update()
+    favs = loader.load_favs()
+    for t in [p['text'] for p in favs[:20]]:
+        print(t)
+        print("===========================")
 
     # pprint(favs[1])
     # pprint(sort_dict(favs[1]))
