@@ -7,10 +7,10 @@ from vkdump.models.favs_loader import FavsLoader
 def update_favs():
     logging.basicConfig(level=logging.INFO)
     loader = FavsLoader()
-    before = loader.load_favs()
+    before = loader.load_feed()
     logging.info("Before: %d posts", len(before))
     loader.update()
-    after = loader.load_favs()
+    after = loader.load_feed()
     logging.info("After: %d posts", len(after))
 
 
