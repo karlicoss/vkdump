@@ -72,6 +72,13 @@ class VkApi:
         )
         return response['items']
 
+    def get_wall(self, owner_id: str, offset: int, count: int = 100) -> List[dict]:
+        response = self.api.wall.get(
+            owner_id=owner_id,
+            offset=offset,
+            count=count,
+        )
+        return response['items']
 
     # deprecated
     def get_all_favs(self) -> List[dict]:

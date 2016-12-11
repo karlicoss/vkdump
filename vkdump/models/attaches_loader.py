@@ -45,14 +45,14 @@ class AttachesLoader:
 
     def __get_photo(self, url: str, path: Path):
         if not self.images_dir.exists():
-            self.logger.warn("Directory %s didn't exist; creating", self.images_dir.as_posix())
+            self.logger.warn("Directory %s doesn't exist; creating", self.images_dir.as_posix())
             self.images_dir.mkdir()
         urlretrieve(url, path.as_posix())
 
     def _retrieve_photos(self, photos: List[PhotoAttach]):
         for i, a in enumerate(photos):
             u = a.best_url()
-            self.logger.info("Retreiving [%d/%d]: %s", i, len(photos), u)
+            self.logger.info("Retrieving [%d/%d]: %s", i, len(photos), u)
             self.__get_photo(u, self.images_dir.joinpath(a.photo_id()))
 
     def download_attaches(self, favs: List[Dict]) -> None:
