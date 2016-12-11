@@ -10,22 +10,27 @@ from vkdump.models.attaches_loader import AttachesLoader
 
 
 class FeedLoader:
-    def __init__(self, feed_path : Path):
-        self.feed_path = feed_path
+    def __init__(self, feed_dir: Path, logger_tag: str='FeedLoader'):
+        self.feed_dir = feed_dir
+        self.feed_file = feed_dir.joinpath('feed.json')
         self.api = get_api()
-        self.attaches_loader = AttachesLoader()
-        self.logger = logging.getLogger(FeedLoader.__name__)
+        self.attaches_loader = AttachesLoader(self.feed_dir.joinpath('images'))
+        self.logger = logging.getLogger(logger_tag)
 
     def _query_new(self, offset: int) -> List[dict]:
         raise NotImplementedError
 
     def load_feed(self) -> List[dict]:
-        with self.feed_path.open('r') as fo:
+        if not self.feed_file.exists():
+            self.logger.warn("File %s does not exist! Assuming empty timeline", self.feed_file.as_posix())
+            return []
+
+        with self.feed_file.open('r') as fo:
             favs = json.load(fo)
             return favs
 
     def _save_feed(self, favs: List[dict]) -> None:
-        with self.feed_path.open('w') as fo:
+        with self.feed_file.open('w') as fo:
             json.dump(favs, fo, indent=5, ensure_ascii=False, sort_keys=True)
 
     def update(self):

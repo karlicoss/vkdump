@@ -9,7 +9,6 @@ class Config:
         self.USER_ID = None  # str
         self.ACCESS_TOKEN = None  # str
         self.FAVS = None  # Path
-        self.IMAGES_DIR = None  # Path
 
     @staticmethod
     def from_path(path: Path):

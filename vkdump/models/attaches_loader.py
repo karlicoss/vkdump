@@ -1,8 +1,8 @@
 import logging
+from pathlib import Path
 from typing import Dict, List
 from urllib.request import urlretrieve
 
-import vkdump.config
 from vkdump.entities.attachments import PhotoAttach
 
 _IGNORED_TYPES = {
@@ -27,8 +27,9 @@ _TYPES = {
 
 
 class AttachesLoader:
-    def __init__(self) -> None:
-        self.config = vkdump.config.config
+    def __init__(self, images_dir: Path) -> None:
+        self.images_dir = images_dir
+        # TODO create if not existnent?
         self.logger = logging.getLogger(AttachesLoader.__name__)
 
     def _get_attachments(self, fav: Dict[str, List[Dict]]) -> List[Dict]:
@@ -42,11 +43,17 @@ class AttachesLoader:
                 att.append(a)
         return att
 
+    def __get_photo(self, url: str, path: Path):
+        if not self.images_dir.exists():
+            self.logger.warn("Directory %s didn't exist; creating", self.images_dir.as_posix())
+            self.images_dir.mkdir()
+        urlretrieve(url, path.as_posix())
+
     def _retrieve_photos(self, photos: List[PhotoAttach]):
         for i, a in enumerate(photos):
             u = a.best_url()
             self.logger.info("Retreiving [%d/%d]: %s", i, len(photos), u)
-            urlretrieve(u, self.config.IMAGES_DIR.joinpath(a.photo_id()).as_posix())
+            self.__get_photo(u, self.images_dir.joinpath(a.photo_id()))
 
     def download_attaches(self, favs: List[Dict]) -> None:
         attaches = {}  # type: Dict
