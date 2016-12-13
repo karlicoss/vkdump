@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vkdump',
-    version='0.1.1',
+    version='0.2',
     description='Tool for backing up VK favorites and walls',
     url='https://github.com/karlicoss/vkdump',
     author='Dmitrii Gerasimov',
@@ -31,6 +31,7 @@ setup(
         'vk>=2.0.2',
 
         'click',  # CLI
+        'coloredlogs',
 
         'pytz',  # time zones handling
 

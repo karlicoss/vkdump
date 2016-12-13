@@ -2,7 +2,14 @@ from pathlib import Path
 
 BACKUP_DIR = Path('/backups/vk/')  # use whichever path you like
 FAVS = BACKUP_DIR.joinpath('favs')
-USER_WALL = BACKUP_DIR.joinpath('wall')
+WALLS_DIR = BACKUP_DIR.joinpath('walls')
 
 USER_ID = '<your_user_id>'
 ACCESS_TOKEN = '<your_token>'
+
+# your can add any ids (as strings) to this list
+# 'friends' just means "add all USER_ID's friends"
+IDS_TO_DUMP = [
+    USER_ID,
+    'friends',
+]

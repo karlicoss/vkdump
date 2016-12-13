@@ -1,5 +1,5 @@
 import logging
-from typing import List
+from typing import List, Dict
 
 import vk
 
@@ -47,11 +47,12 @@ class VkApi:
         self.logger = logging.getLogger('VkApi')
         self.logger.setLevel(logging.INFO)
 
-    def get_friends(self, user_id: str):
-        return self.api.friends.get(
+    def get_friends(self, user_id: str) -> List[Dict]:
+        response = self.api.friends.get(
             user_id=user_id,
             fields=_COMMON_USER_FIELDS,
         )
+        return response['items']
 
     def get_several(self, user_ids: List[str]):
         return self.api.users.get(

@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 from pathlib import Path
 from time import sleep
 from typing import List
@@ -13,8 +14,10 @@ from vkdump.models.attaches_loader import AttachesLoader
 
 
 class FeedLoader:
-    def __init__(self, feed_dir: Path, logger_tag: str='FeedLoader'):
+    def __init__(self, feed_dir: Path, logger_tag: str='FeedLoader') -> None:
         self.feed_dir = feed_dir
+        if not feed_dir.exists():
+            os.makedirs(feed_dir.as_posix())
         self.feed_file = feed_dir.joinpath('feed.json')
         self.api = get_api()
         self.attaches_loader = AttachesLoader(self.feed_dir.joinpath('images'))

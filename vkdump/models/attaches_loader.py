@@ -1,6 +1,8 @@
 import logging
+import os
 from pathlib import Path
 from typing import Dict, List
+from urllib.error import HTTPError
 from urllib.request import urlretrieve
 
 from vkdump.entities.attachments import PhotoAttach
@@ -28,7 +30,7 @@ _TYPES = {
 
 class AttachesLoader:
     def __init__(self, images_dir: Path) -> None:
-        self.images_dir = images_dir
+        self.images_dir = images_dir  # type: Path
         # TODO create if not existnent?
         self.logger = logging.getLogger(AttachesLoader.__name__)
 
@@ -46,8 +48,14 @@ class AttachesLoader:
     def __get_photo(self, url: str, path: Path):
         if not self.images_dir.exists():
             self.logger.warn("Directory %s doesn't exist; creating", self.images_dir.as_posix())
-            self.images_dir.mkdir()
-        urlretrieve(url, path.as_posix())
+            os.makedirs(self.images_dir.as_posix(), exist_ok=True)
+        try:
+            urlretrieve(url, path.as_posix())
+        except HTTPError as e:
+            if e.code == 502:  # bad gateway
+                self.logger.error(str(e))
+            else:
+                raise e
 
     def _retrieve_photos(self, photos: List[PhotoAttach]):
         for i, a in enumerate(photos):
