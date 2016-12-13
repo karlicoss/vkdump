@@ -5,6 +5,7 @@ from time import sleep
 from typing import List
 
 from vkdump.api import get_api
+from vkdump.api.api import QUERY_SLEEP_TIME
 from vkdump.entities.posts import get_post_id
 from vkdump.models.attaches_loader import AttachesLoader
 
@@ -52,9 +53,9 @@ class FeedLoader:
             result = self._query_new(len(new_posts))
             result_ids = {get_post_id(p) for p in result}
             result = [p for p in result if get_post_id(p) not in old_ids]
-            self.logger.info("Loaded %d new posts", len(result))
+            self.logger.debug("Loaded %d new posts", len(result))
             new_posts.extend(result)
             if not old_ids.isdisjoint(result_ids) or len(result_ids) == 0:
                 break
-            sleep(0.5)  # TODO meh
+            sleep(QUERY_SLEEP_TIME)
         return new_posts

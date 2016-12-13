@@ -1,5 +1,4 @@
 import logging
-from time import sleep
 from typing import List
 
 import vk
@@ -34,6 +33,9 @@ _COMMON_USER_FIELDS = [
     'career',
     'military'
 ]
+
+# VK Api documentation claims you should not do more than three queries per second. This should be safe
+QUERY_SLEEP_TIME = 1  # seconds
 
 
 # TODO: limits
@@ -79,21 +81,6 @@ class VkApi:
             count=count,
         )
         return response['items']
-
-    # deprecated
-    def get_all_favs(self) -> List[dict]:
-        # TODO use map to ensure uniqueness?
-        res = []  # type: List[dict]
-        while True:
-            new_favs = self.get_favs(offset=len(res))
-            if len(new_favs) == 0:
-                break
-
-            print("Len: " + str(len(res)))
-            self.logger.info("Got %d new favs", len(new_favs))
-            sleep(0.5)  # TODO meh
-            res.extend(new_favs)
-        return res
 
     def get_posts_by_ids(self, ids: List[str]) -> List[dict]:
         ids_string = ','.join(ids)
