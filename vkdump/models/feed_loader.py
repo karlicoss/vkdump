@@ -4,6 +4,8 @@ from pathlib import Path
 from time import sleep
 from typing import List
 
+from atomicwrites import atomic_write
+
 from vkdump.api import get_api
 from vkdump.api.api import QUERY_SLEEP_TIME
 from vkdump.entities.posts import get_post_id
@@ -31,7 +33,7 @@ class FeedLoader:
             return favs
 
     def _save_feed(self, favs: List[dict]) -> None:
-        with self.feed_file.open('w') as fo:
+        with atomic_write(self.feed_file.as_posix(), overwrite=True) as fo:
             json.dump(favs, fo, indent=5, ensure_ascii=False, sort_keys=True)
 
     def update(self):
