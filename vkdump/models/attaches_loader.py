@@ -45,23 +45,28 @@ class AttachesLoader:
                 att.append(a)
         return att
 
-    def __get_photo(self, url: str, path: Path):
+    def __get_photo(self, url: str, photo_id: str):
         if not self.images_dir.exists():
             self.logger.warn("Directory %s doesn't exist; creating", self.images_dir.as_posix())
             os.makedirs(self.images_dir.as_posix(), exist_ok=True)
-        try:
-            urlretrieve(url, path.as_posix())
-        except HTTPError as e:
-            if e.code == 502:  # bad gateway
-                self.logger.error(str(e))
-            else:
-                raise e
+        path = self.images_dir.joinpath(photo_id)
+        if path.exists():
+            self.logger.debug("File %s already exists, skipping..", path.as_posix())
+        else:
+            try:
+                urlretrieve(url, path.as_posix())
+            except HTTPError as e:
+                if e.code == 502:  # bad gateway
+                    self.logger.error(str(e))
+                else:
+                    raise e
 
     def _retrieve_photos(self, photos: List[PhotoAttach]):
+        self.logger.info("Retrieving %d photos", len(photos))
         for i, a in enumerate(photos):
             u = a.best_url()
-            self.logger.info("Retrieving [%d/%d]: %s", i, len(photos), u)
-            self.__get_photo(u, self.images_dir.joinpath(a.photo_id()))
+            self.logger.debug("Retrieving [%d/%d]: %s", i, len(photos), u)
+            self.__get_photo(u, a.photo_id())
 
     def download_attaches(self, favs: List[Dict]) -> None:
         attaches = {}  # type: Dict
