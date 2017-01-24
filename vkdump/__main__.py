@@ -8,6 +8,7 @@ from vkdump.api.api import VkApi
 from vkdump.config import config
 from vkdump.models.favs_loader import FavsLoader
 from vkdump.models.feed_loader import FeedLoader
+from vkdump.models.profiles_loader import ProfilesLoader
 from vkdump.models.wall_loader import WallLoader
 
 
@@ -24,7 +25,7 @@ def update_favs():
     update_feed(FavsLoader())
 
 
-def update_all_walls():
+def get_tracked_ids():
     ids = set()
     for i in config.IDS_TO_DUMP:
         if i == 'friends':
@@ -36,6 +37,11 @@ def update_all_walls():
         else:
             raise AttributeError("Unexpected id " + i)
     ids = sorted(ids)  # for determinism
+    return ids
+
+
+def update_all_walls():
+    ids = get_tracked_ids()
     logging.info("Walls updater: %d IDs to update", len(ids))
     for i, uid in enumerate(ids):
         logging.info("[%d/%d]: updating %s", i, len(ids), uid)
@@ -48,8 +54,16 @@ def update_all_walls():
                 raise e
 
 
+def update_profiles():
+    ids = get_tracked_ids()
+    logging.info("Profiles updater: %d IDs to update", len(ids))
+    loader = ProfilesLoader()
+    loader.update_all(ids)
+
+
 def main():
     update_favs()
+    update_profiles()
     update_all_walls()
 
 

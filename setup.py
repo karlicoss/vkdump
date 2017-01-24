@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 
 setup(
     name='vkdump',
-    version='0.2',
-    description='Tool for backing up VK favorites and walls',
+    version='0.3',
+    description='Tool for backing up VK favorites, walls and profiles',
     url='https://github.com/karlicoss/vkdump',
     author='Dmitrii Gerasimov',
     author_email='karlicoss@gmail.com',

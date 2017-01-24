@@ -2,7 +2,7 @@ from pathlib import Path
 
 BACKUP_DIR = Path('/backups/vk/')  # use whichever path you like
 FAVS = BACKUP_DIR.joinpath('favs')
-WALLS_DIR = BACKUP_DIR.joinpath('walls')
+WALLS_DIR = BACKUP_DIR.joinpath('profiles')
 
 USER_ID = '<your_user_id>'
 ACCESS_TOKEN = '<your_token>'
