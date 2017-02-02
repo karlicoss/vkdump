@@ -22,7 +22,10 @@ class ProfilesLoader:
 
     def _save_profile(self, profile: dict):
         id_ = str(profile['id'])  # jeez, why is it int?
-        profiles_dir = config.WALLS_DIR.joinpath(id_).joinpath('profiles')  # type: Path
+        user_dir = config.WALLS_DIR.joinpath(id_)
+        if not user_dir.exists():
+            user_dir.mkdir()
+        profiles_dir = user_dir.joinpath('profiles')  # type: Path
         if not profiles_dir.exists():
             self.logger.warning("Directory %s doesn't exist; creating", profiles_dir.as_posix())
             profiles_dir.mkdir()
