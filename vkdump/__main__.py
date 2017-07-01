@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.6
 import logging
 
 import coloredlogs
@@ -14,10 +14,10 @@ from vkdump.models.wall_loader import WallLoader
 
 def update_feed(loader: FeedLoader):
     before = loader.load_feed()
-    logging.info("Before: %d posts", len(before))
+    logging.info(f"Before: {len(before)} posts")
     loader.update()
     after = loader.load_feed()
-    logging.info("After: %d posts", len(after))
+    logging.info(f"After: {len(after)} posts")
 
 
 def update_favs():
@@ -42,9 +42,9 @@ def get_tracked_ids():
 
 def update_all_walls():
     ids = get_tracked_ids()
-    logging.info("Walls updater: %d IDs to update", len(ids))
+    logging.info(f"Walls updater: {len(ids)} IDs to update")
     for i, uid in enumerate(ids):
-        logging.info("[%d/%d]: updating %s", i, len(ids), uid)
+        logging.info(f"[{i}/{len(ids)}]: updating {uid}")
         try:
             update_feed(WallLoader(uid))
         except VkAPIError as e:

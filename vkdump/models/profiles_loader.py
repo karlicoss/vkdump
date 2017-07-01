@@ -25,7 +25,7 @@ class ProfilesLoader:
         user_dir = config.WALLS_DIR.joinpath(id_)
         if not user_dir.exists():
             user_dir.mkdir()
-        profiles_dir = user_dir.joinpath('profiles')  # type: Path
+        profiles_dir: Path = user_dir.joinpath('profiles')
         if not profiles_dir.exists():
             self.logger.warning("Directory %s doesn't exist; creating", profiles_dir.as_posix())
             profiles_dir.mkdir()

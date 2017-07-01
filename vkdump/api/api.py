@@ -1,7 +1,7 @@
 import logging
 from typing import List, Dict
 
-import vk
+import vk # type: ignore
 
 from vkdump.config import config
 

@@ -6,8 +6,8 @@ from vkdump.models.feed_loader import FeedLoader
 
 
 class WallLoader(FeedLoader):
-    def __init__(self, uid: str):
-        wall_path = config.WALLS_DIR.joinpath(uid)  # type: Path
+    def __init__(self, uid: str) -> None:
+        wall_path: Path = config.WALLS_DIR.joinpath(uid)
         super().__init__(wall_path, logger_tag=WallLoader.__name__ + "_" + uid)
         self.uid = uid
 

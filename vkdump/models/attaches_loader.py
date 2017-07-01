@@ -30,7 +30,7 @@ _TYPES = {
 
 class AttachesLoader:
     def __init__(self, images_dir: Path) -> None:
-        self.images_dir = images_dir  # type: Path
+        self.images_dir: Path = images_dir
         # TODO create if not existnent?
         self.logger = logging.getLogger(AttachesLoader.__name__)
 
@@ -69,7 +69,7 @@ class AttachesLoader:
             self.__get_photo(u, a.photo_id())
 
     def download_attaches(self, favs: List[Dict]) -> None:
-        attaches = {}  # type: Dict
+        attaches: Dict = {}
         for fav in favs:
             att = self._get_attachments(fav)
             for a in att:

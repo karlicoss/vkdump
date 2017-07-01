@@ -3,7 +3,7 @@ import logging
 import os
 from pathlib import Path
 from time import sleep
-from typing import List
+from typing import List, Dict
 
 from atomicwrites import atomic_write
 
@@ -52,7 +52,7 @@ class FeedLoader:
         old_ids = {get_post_id(p) for p in old_posts}
 
         # TODO use map to ensure uniqueness?
-        new_posts = []  # type: List[dict]
+        new_posts: List[Dict] = []
 
         while True:
             result = self._query_new(len(new_posts))
