@@ -22,6 +22,8 @@ class FeedLoader:
         self.api = get_api()
         self.attaches_loader = AttachesLoader(self.feed_dir.joinpath('images'))
         self.logger = logging.getLogger(logger_tag)
+        import coloredlogs # type: ignore
+        coloredlogs.install(logger=self.logger)
 
     def _query_new(self, offset: int) -> List[dict]:
         raise NotImplementedError

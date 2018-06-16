@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='vkdump',
-    version='0.3.1',
+    version='0.4',
     description='Tool for backing up VK favorites, walls and profiles',
     url='https://github.com/karlicoss/vkdump',
     author='Dmitrii Gerasimov',
@@ -27,6 +27,7 @@ setup(
     ],
     install_requires=[
         'atomicwrites',
+        'backoff',
 
         'vk>=2.0.2',
 
