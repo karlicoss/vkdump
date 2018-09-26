@@ -2,8 +2,8 @@ from typing import Dict
 
 
 class PhotoAttach:
-    def __init__(self) -> None:
-        self.json: Dict = None
+    def __init__(self, j: Dict) -> None:
+        self.json: Dict = j
 
     def text(self) -> str:
         return self.json['text']
@@ -26,8 +26,7 @@ class PhotoAttach:
         if json['type'] != type:
             raise AssertionError
         photo_json = json[type]
-        attach = PhotoAttach()
-        attach.json = photo_json
+        attach = PhotoAttach(photo_json)
         return attach
 
     def __str__(self):

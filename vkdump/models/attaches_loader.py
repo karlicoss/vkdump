@@ -7,6 +7,8 @@ from urllib.request import urlretrieve
 
 from vkdump.entities.attachments import PhotoAttach
 
+import backoff # type: ignore
+
 _IGNORED_TYPES = {
     'audio',
     'doc',
@@ -27,6 +29,12 @@ _TYPES = {
     'photo',
 }
 
+def giveup(e: Exception) -> bool:
+    if isinstance(e, HTTPError):
+        if e.code == 504: # gateway timeout
+            return False
+
+    return True
 
 class AttachesLoader:
     def __init__(self, images_dir: Path) -> None:
@@ -45,6 +53,12 @@ class AttachesLoader:
                 att.append(a)
         return att
 
+    @backoff.on_exception(
+        backoff.expo,
+        Exception,
+        giveup=giveup,
+        max_tries=5,
+    )
     def __get_photo(self, url: str, photo_id: str):
         if not self.images_dir.exists():
             self.logger.warn("Directory %s doesn't exist; creating", self.images_dir.as_posix())
@@ -52,14 +66,14 @@ class AttachesLoader:
         path = self.images_dir.joinpath(photo_id)
         if path.exists():
             self.logger.debug("File %s already exists, skipping..", path.as_posix())
-        else:
-            try:
-                urlretrieve(url, path.as_posix())
-            except HTTPError as e:
-                if e.code == 502:  # bad gateway
-                    self.logger.error(str(e))
-                else:
-                    raise e
+            return
+        try:
+            urlretrieve(url, path.as_posix())
+        except HTTPError as e:
+            if e.code == 502:  # bad gateway
+                self.logger.error(str(e))
+            else:
+                raise e
 
     def _retrieve_photos(self, photos: List[PhotoAttach]):
         self.logger.info("Retrieving %d photos", len(photos))
