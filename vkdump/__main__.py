@@ -38,8 +38,7 @@ def get_tracked_ids():
             ids.add(i)
         else:
             raise AttributeError("Unexpected id " + i)
-    ids = sorted(ids)  # for determinism
-    return ids
+    return list(sorted(ids))  # for determinism
 
 
 def update_all_walls():

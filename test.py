@@ -28,7 +28,8 @@ def test_logging():
     loader = WallLoader(DELETED_ID)
     loader._get_new_posts([])
 
-test_logging()
+if __name__ == '__main__':
+    test_logging()
 
 # TODO python decorator to mess with network??
 # from vkdump.models.profiles_loader import ProfilesLoader
