@@ -1,28 +1,28 @@
 from pathlib import Path
 
-from typing import Dict, List, Any
+from typing import Dict, List, Any, NamedTuple
 
 
-class Config:
-    def __init__(self):
-        self.USER_ID: str = None
-        self.ACCESS_TOKEN: str = None
-        self.FAVS: Path = None
-        self.WALLS_DIR: Path = None
-        self.IDS_TO_DUMP: List[str] = None
 
-    @staticmethod
-    def from_path(path: Path):
-        config = Config()
+class Config(NamedTuple):
+    USER_ID: str
+    ACCESS_TOKEN: str
+    FAVS: Path
+    WALLS_DIR: Path
+    IDS_TO_DUMP: List[str]
+
+    @classmethod
+    def from_path(cls, path: Path):
         # I know it's not very safe, but couldn't find any decent configuration format for Python
         # supporting dicts
-        # Anyway, if user adds some bad code in configuration.py, it's his problem :)
+        # Anyway, if user adds some bad code in configuration.py, it's their problem :)
         result: Dict[str, Any] = {}
         with path.open('r') as fo:
             exec(fo.read(), result)
-        for attr in vars(config):
-            setattr(config, attr, result[attr])
-        return config
+        dct = {}
+        for attr in cls._fields:
+            dct[attr] = result[attr]
+        return cls(**dct)
 
 
 config: Config
